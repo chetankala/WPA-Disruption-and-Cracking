@@ -26,3 +26,19 @@ This lab will demonstrate a brute force attack against the Wi-Fi Protected Acces
 
 
 ## 3. Find and Disrupting the Existing Connection
+
+### 3.1 Identifying the Target
+- First, you will need to identify the access point to which you are attempting to connect.
+- Run `iwlist <interface> scan` or `airodump-ng <interface>` to find the BSSID (MAC address) of the access point.
+  - MacOS users can use JamWiFi’s scan feature.  
+
+### 3.2 Capturing Traffic
+- Sniff the four-way authentication handshake
+- Capture traffic on the access point’s channel and filter by the BSSID (MAC address) of the access point
+  - Use the command: `airodump-ng --bssid <bssid> -c <channel_#> --write <output_file_name> <interface>`
+- For example, the following command sniffs channel 6 for any traffic related to the device with the MAC address of 00:25:9c:39:06:72 and writes it to the file capture_wpa:
+  - `airodump-ng --bssid 00:25:9c:39:06:72 -c 6 --write capture_wpa wlan0`
+- While this command is running, it will also show you the MAC addresses of devices that have already connected to this access point.
+
+### 3.3 Deauthentication
+- Use `aireplay-ng` to deauthenticate a client device, forcing it to perform a handshake to reconnect with the access point.
