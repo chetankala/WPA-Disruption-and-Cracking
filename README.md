@@ -42,3 +42,16 @@ This lab will demonstrate a brute force attack against the Wi-Fi Protected Acces
 
 ### 3.3 Deauthentication
 - Use `aireplay-ng` to deauthenticate a client device, forcing it to perform a handshake to reconnect with the access point.
+- Use the following command: `aireplay-ng --deauth <#_of_deauth_packets> -a <bssid_of_AP> -c <MAC_address_of_client> <interface>`
+- For example, the following command sends 10 deauthentication packets to deauthenticate a client with a MAC address of **00:0f:b5:a1:f3:90** connected to the AP with the MAC address of **00:25:9c:39:06:72**:
+  - `airodump-ng --deauth 10 -a 00:25:9c:39:06:72 -c 00:0f:b5:a1:f3:90 wlan0`
+
+## 4. Crack the Password
+- View the packets in Wireshark that were sniffed and filter for **EAPOL** packets.
+  - **EAPOL** stands for “Extensible Authentication Protocol over LAN”.
+  - It is the protocol used to conduct the four-way handshake.
+- If the four packets are not found, then retry the steps in task 3 until the handshake packets are successfully captured.
+
+- aircrack-ng will be used to crack the pre-shared key from the authentication handshake packets.
+- This will require developing a good cracking dictionary.
+- When running aircrack-ng, the following command should be used: `aircrack-ng <packet_capture> -b <bssid> -w <wordlist>`
